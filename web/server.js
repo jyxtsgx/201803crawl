@@ -70,10 +70,13 @@ app.get('/subscribe', mustLogin, async function (req, res) {
 });
 app.post('/subscribe', mustLogin, async function (req, res) {
     let { tags } = req.body;//[ '1', '2', '9' ] }
+    console.log(tags);
     let user = req.session.user;//{id,name}
     await query(`DELETE FROM user_tag WHERE user_id=?`, [user.id]);
     for (let i = 0; i < tags.length; i++) {
-        await query(`INSERT INTO user_tag(user_id,tag_id) VALUES(?,?)`, [user.id, parseInt(tags[i])])
+        if (!isNaN(tags[i])) {
+            await query(`INSERT INTO user_tag(user_id,tag_id) VALUES(?,?)`, [user.id, parseInt(tags[i])])
+        }
     }
     res.redirect('/');
 });
