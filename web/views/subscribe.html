@@ -8,8 +8,7 @@
                         tags.forEach(function(tag){%>
                             <div class="checkbox col-md-3">
                                 <label>
-                                    <input type="checkbox" <%=tag.checked=="true" ? "checked": ""%> value="
-                                    <%=tag.id%>" name="tags">
+                                    <input type="checkbox" <%=tag.checked=="true" ? "checked": ""%> value="<%=tag.id%>" name="tags">
                                         <%=tag.name%>
                                 </label>
                             </div>
