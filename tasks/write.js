@@ -1,5 +1,6 @@
 let { query } = require('../mysql');
 let sendMail = require('../mail');
+let search = require('../search');
 let logger = require('debug')('juejin:write');
 
 //保存标签的数组
@@ -30,8 +31,9 @@ async function saveArticles(articles) {
         } else {
             logger('开始插入文章:' + article.title);
             await query(`INSERT INTO articles(id,title,content,href) VALUES(?,?,?,?)`, [article.id, article.title, article.content, article.href]);
-
+            await search.create(article);
         }
+
         logger('开始处理文章标签关系:' + article.title);
         await query(`DELETE FROM article_tag WHERE article_id=?`, [article.id]);
         //第一步要查找标签名称对应的ID，第二步把标签ID和文章ID关联保存到article_tag表里

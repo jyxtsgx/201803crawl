@@ -27,7 +27,7 @@ async function tags(url) {
             article
         });
     });
-    return tags.slice(0, 3);
+    return tags.slice(0, 4);
 }
 //这里用来读取标签下面文章的列表
 async function articles(url) {

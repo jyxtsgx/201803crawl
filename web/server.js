@@ -3,6 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const { query } = require('../mysql');
+const { search } = require('../search');
 const app = express();
 function common(req, res, next) {
     //res.locals是约定一个变量，它默认会用来渲染模板
@@ -39,6 +40,15 @@ app.get('/detail/:id', async function (req, res) {
     let id = req.params.id;
     let articles = await query(`SELECT * FROM articles WHERE id =?`, [id]);
     res.render('detail', { title: '文章详情', article: articles[0] });
+});
+app.get('/search', async function (req, res) {
+    res.render('search', { title: '搜索' });
+});
+app.post('/search', async function (req, res) {
+    let { keyword } = req.body;
+    let result = await search(keyword);
+    console.log(result.hits.hits);
+    res.render('result', { title: '搜索结果', articles: result.hits.hits });
 });
 app.get('/login', async function (req, res) {
     res.render('login', { title: '登录' });
